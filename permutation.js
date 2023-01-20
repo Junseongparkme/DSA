@@ -1,41 +1,26 @@
-// r개를 뽑는 모든 순열 구하기
+// n개의 요소로 이루어진 배열에서 r개를 뽑는 순열을 모두 출력
+// 배열이 오름차순으로 정렬되지 않았다면 정렬해줍시다.
 
-function permutation(arr, r) {
-  const result = [];
+let arr = [1, 2, 3, 4, 5];
+let cnt = 0;
 
-  if (r === 1) return arr.map(value => [value]);
-
-  arr.forEach((fixed, index, origin) => {
-    const restArr = [...origin.slice(0, index), ...origin.slice(index + 1)];
-    const restPermutation = permutation(restArr, r - 1);
-    const restResultArray = restPermutation.map(value => [fixed, ...value]);
-    result.push(...restResultArray);
-  });
-
-  return result;
-}
-
-const result = permutation([1, 2, 3, 4, 5], 3);
-console.log(result);
-
-// r개를 뽑는 순열 개수 구하기
-// nPr = n! / (n-r)!
-
-function permutationCount(arr, r) {
-  let n = arr.length;
-  return factorial(n) / factorial(n - r);
-}
-
-function factorial(n) {
-  let result = 1;
-
-  while (n) {
-    result *= n;
-    n--;
+function permutation(n, r, depth) {
+  if (r === depth) {
+    let unit = arr.slice(0, r);
+    console.log(unit);
+    cnt++;
+    return;
   }
 
-  return result;
+  for (let i = depth; i < n; i++) {
+    [arr[i], arr[depth]] = [arr[depth], arr[i]];
+    permutation(n, r, depth + 1);
+    [arr[i], arr[depth]] = [arr[depth], arr[i]];
+  }
 }
 
-const res = permutationCount([1, 2, 3, 4, 5], 3);
-console.log(res);
+permutation(5, 3, 0);
+console.log(cnt);
+
+// 순열의 개수만 필요하다면 공식을 사용할 수 있습니다.
+// nPr = n! / (n-r)!

@@ -1,41 +1,25 @@
-// r개를 뽑는 모든 조합 구하기
+// n개의 요소로 이루어진 배열에서 r개를 뽑는 조합을 모두 출력
 
-function combination(arr, r) {
-  const result = [];
+let arr = [1, 2, 3, 4, 5];
+let cnt = 0;
 
-  if (r === 1) return arr.map(value => [value]);
-
-  arr.forEach((fixed, index, origin) => {
-    const restArray = origin.slice(index + 1);
-    const restCombination = combination(restArray, r - 1);
-    const restResultArray = restCombination.map(value => [fixed, ...value]);
-    result.push(...restResultArray);
-  });
-
-  return result;
-}
-
-const result = combination([1, 2, 3, 4, 5], 3);
-console.log(result);
-
-// r개를 뽑는 모든 조합의 개수 구하기
-// nCr = n! / r!(n-r)!
-
-function combinationCount(arr, r) {
-  const n = arr.length;
-  return factorial(n) / factorial(r) / factorial(n - r);
-}
-
-function factorial(n) {
-  let result = 1;
-
-  while (n) {
-    result *= n;
-    n--;
+function combination(start, b, r) {
+  if (b.length === r) {
+    cnt++;
+    console.log(b.slice(0, r));
+    return;
   }
 
-  return result;
+  for (let i = start + 1; i < arr.length; i++) {
+    b.push(arr[i]);
+    combination(i, b, r);
+    b.pop();
+  }
+  return;
 }
 
-const res = combinationCount([1, 2, 3, 4, 5], 3);
-console.log(res);
+combination(-1, [], 3);
+console.log(cnt);
+
+// 조합의 개수만 필요하다면 공식을 사용할 수 있습니다.
+// nCr = n! / r!(n-r)!
